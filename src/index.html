@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    </head>
+
+  <body>
+
+    <button class="bt">send</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const bt = document.querySelector('.bt');
+    
+    var socket = io();
+    
+    socket.on('connect',function(){      
+        socket.emit('join','room_one');
+        socket.emit('room_message',{hello:'hello'});
+    });   
+
+    socket.on('room_message',function(data){
+        console.log(data);
+    })   
+
+
+    bt.addEventListener('click',()=>{
+        socket.emit('message',() =>{
+          console.log('send');
+        })
+    })
+
+
+    // socket.on('message',function(data){
+    //     console.log(data);
+    // })   
+
+   
+
+
+  </script>
+
+  </body>
+</html>
