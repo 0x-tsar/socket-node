@@ -16,24 +16,22 @@
     
     socket.on('connect',function(){      
         socket.emit('join','room_one');
-        socket.emit('room_message',{hello:'hello'});
+        // socket.emit('room_message',{hello:'hello'});
     });   
 
     socket.on('room_message',function(data){
         console.log(data);
     })   
 
-
     bt.addEventListener('click',()=>{
         socket.emit('message',() =>{
           console.log('send');
         })
     })
-
-
-    // socket.on('message',function(data){
-    //     console.log(data);
-    // })   
+    
+    socket.on('message',function(data){
+        console.log(data);
+    })   
 
    
 

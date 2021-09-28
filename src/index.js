@@ -20,7 +20,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (msg) => {
-    io.to("room_one").emit("room_message", "click");
+    console.log("msg..");
+    socket.emit("message", "clickk");
+    // io.to("room_one").emit("room_message", "click");
   });
 });
 
