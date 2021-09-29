@@ -70,6 +70,12 @@ io.on("connection", (socket) => {
     io.to("room_one").emit("room_message", `message for room_one: ${sum}`);
     // io.to("room_one").emit("room_message", "click");
   });
+
+  socket.on("interval", () => {
+    setInterval(() => {
+      socket.emit("interval", "haiiii");
+    }, 2000);
+  });
 });
 
 server.listen(5000, () => {

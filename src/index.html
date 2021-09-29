@@ -25,12 +25,19 @@
       })   
 
       bt.addEventListener('click',()=>{
-          socket.emit('message', 3)
-      })
+          // socket.emit('message', 3)
+        })
+        
+        socket.on('message',function(data){
+          console.log(`data: ${data}`);
+        })  
+        
+        socket.on('interval', (data)=>{
+          console.log(data)
+        })
 
-      socket.on('message',function(data){
-        console.log(`data: ${data}`);
-      })  
+        //calling alone
+        socket.emit('interval', 1)
 
   </script>
 
