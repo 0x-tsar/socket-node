@@ -24,8 +24,6 @@ const donations = new web3.eth.Contract(
 
 const loadingLogs = async () => {};
 
-// let dados = [];
-
 // app.get("/", (req, res) => {
 //   // res.sendFile(__dirname + "/index.html");
 //   donations.events
@@ -50,6 +48,8 @@ const loadingLogs = async () => {};
 //   res.json(dados);
 // });
 
+let dados = [];
+
 app.get("/", (req, res) => {
   // res.json("😀");
   res.sendFile(__dirname + "/index.html");
@@ -71,12 +71,33 @@ io.on("connection", (socket) => {
     // io.to("room_one").emit("room_message", "click");
   });
 
-  socket.on("interval", () => {
-    setInterval(() => {
-      socket.emit("interval", "haiiii");
-    }, 2000);
+  donations.events.newDonation({ fromBlock: 0 }, function (error, event) {
+    console.log(event);
+    socket.emit("new_event", "got new donation");
+    // socket.on("interval", () => {
+    // console.log("got new donation");
+    // });
   });
+  //   .on("data", function (event) {
+  //     const log = Object.keys(event.returnValues).map((key) => {
+  //       return event.returnValues[key];
+  //     });
+  //     dados.push(log);
+
+  //     console.log(event.returnValues);
+  //   });
+
+  // socket.on("interval", () => {
+  //   socket.emit("interval", dados);
+  //   dados = [];
+  //   // setInterval(() => {
+  //   //   socket.emit("interval", JSON.stringify(obj));
+  //   // }, 2000);
+  // });
 });
+
+//JSON.parse to convert json in object
+//JSON.stringfy to convert object in string
 
 server.listen(5000, () => {
   console.log("listening on *:5000");

@@ -36,8 +36,12 @@
           console.log(data)
         })
 
+        socket.on('new_event',(data)=>{
+          console.log(data)
+        })
+
         //calling alone
-        socket.emit('interval', 1)
+        // socket.emit('interval', 1)
 
   </script>
 
