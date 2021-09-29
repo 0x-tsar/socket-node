@@ -6,9 +6,26 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3002",
+    methods: ["GET", "POST"],
+  },
+});
 
-app.use(cors());
+// const io = require("socket.io")(httpServer, {
+//   cors: {
+//     origin: "http://localhost:3002",
+//     methods: ["GET", "POST"],
+//   },
+// });
+
+// app.use(
+//   cors({
+//     origin: "http://localhost:3002/",
+//     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   })
+// );
 
 const Web3 = require("web3");
 const Donations = require("./contracts/Donations.json");
@@ -72,11 +89,15 @@ io.on("connection", (socket) => {
   });
 
   donations.events.newDonation({ fromBlock: 0 }, function (error, event) {
-    console.log(event);
-    socket.emit("new_event", "got new donation");
-    // socket.on("interval", () => {
-    // console.log("got new donation");
-    // });
+    // console.log(event);
+    // socket.emit("new_event", "got new donation");
+    const log = Object.keys(event.returnValues).map((key) => {
+      return event.returnValues[key];
+    });
+    dados.push(log);
+
+    socket.emit("new_event", JSON.stringify(log));
+    dados = [];
   });
   //   .on("data", function (event) {
   //     const log = Object.keys(event.returnValues).map((key) => {
