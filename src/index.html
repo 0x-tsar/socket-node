@@ -7,32 +7,30 @@
   <body>
 
     <button class="bt">send</button>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const bt = document.querySelector('.bt');
     
-    var socket = io();
+    <script src="/socket.io/socket.io.js"></script>
     
-    socket.on('connect',function(){      
-        socket.emit('join','room_one');
-        // socket.emit('room_message',{hello:'hello'});
-    });   
+    
+    <script>
+      const bt = document.querySelector('.bt')
+      var socket = io();
 
-    socket.on('room_message',function(data){
-        console.log(data);
-    })   
+      socket.on('connect',function(){      
+          socket.emit('join','room_one');
+          // socket.emit('room_message',{hello:'hello'});
+      });   
 
-    bt.addEventListener('click',()=>{
-        socket.emit('message',() =>{
-          console.log('send');
-        })
-    })
+      socket.on('room_message',function(data){
+          console.log(data);
+      })   
 
-    socket.on('message',function(data){
-        console.log(data);
-    })   
+      bt.addEventListener('click',()=>{
+          socket.emit('message', 3)
+      })
 
+      socket.on('message',function(data){
+        console.log(`data: ${data}`);
+      })  
 
   </script>
 

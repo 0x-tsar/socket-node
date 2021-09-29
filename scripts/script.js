@@ -9,7 +9,7 @@ module.exports = async () => {
   const mybalance = await token.balanceOf(account);
   console.log(`my balance: ${mybalance}`);
 
-  const value = web3.utils.toWei("0.0001");
+  const value = web3.utils.toWei("0.000001");
   await token.approve(donations.address, value);
   const sendDonation = await donations.donate(value);
 };

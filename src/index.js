@@ -1,10 +1,14 @@
-const { on } = require("events");
+// const { on } = require("events");
+// const { json } = require("express");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+app.use(cors());
 
 const Web3 = require("web3");
 const Donations = require("./contracts/Donations.json");
@@ -13,35 +17,41 @@ const web3 = new Web3(
   "wss://kovan.infura.io/ws/v3/d036a59d3f7d4cceab5b5ec68e2c114a"
 );
 
-const evento = new web3.eth.Contract(
+const donations = new web3.eth.Contract(
   Donations.abi,
   Donations.networks["42"].address
 );
 
-evento.events
-  .newDonation(
-    {
-      fromBlock: 0,
-    },
-    function (error, event) {
-      console.log(event);
-    }
-  )
-  .on("data", function (event) {
-    console.log(`A DONATION WAS MADE!`);
-    console.log(`-----------`);
-    console.log(event); // same results as the optional callback above
-  })
-  .on("changed", function (event) {
-    // remove event from local database
-  })
-  .on("error", console.error);
+const loadingLogs = async () => {};
 
-///
-///
-///
-///
+// let dados = [];
+
+// app.get("/", (req, res) => {
+//   // res.sendFile(__dirname + "/index.html");
+//   donations.events
+//     .newDonation(
+//       {
+//         fromBlock: 0,
+//       },
+//       function (error, event) {}
+//     )
+//     .on("data", function (event) {
+//       dados = [];
+//       const log = Object.keys(event.returnValues).map((key) => {
+//         // console.log(event.returnValues[key]);
+//         return event.returnValues[key];
+//       });
+
+//       dados.push(log);
+//     });
+
+//   console.log(dados);
+//   // res.send(JSON.stringify(event)); // INSIDE callback
+//   res.json(dados);
+// });
+
 app.get("/", (req, res) => {
+  // res.json("😀");
   res.sendFile(__dirname + "/index.html");
 });
 
@@ -55,8 +65,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (msg) => {
-    console.log("msg..");
-    socket.emit("message", "clickk");
+    let sum = msg + 1;
+    socket.emit("message", sum);
+    io.to("room_one").emit("room_message", `message for room_one: ${sum}`);
     // io.to("room_one").emit("room_message", "click");
   });
 });

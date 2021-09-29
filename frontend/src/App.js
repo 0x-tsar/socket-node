@@ -1,9 +1,11 @@
 import "./App.css";
 import getBlockchain from "./ethereum";
 import { useEffect, useState } from "react";
+import socketClient from "socket.io-client";
 
 function App() {
   const [donation, setDonation] = useState(undefined);
+  let socket = socketClient("http://localhost:5000/");
 
   useEffect(() => {
     const done = async () => {
